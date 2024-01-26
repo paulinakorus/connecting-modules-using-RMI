@@ -9,13 +9,14 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="e71a3d7c-4391-4995-8dbb-e24ef2ad2d90" name="Changes" comment="Changing name from Lab6 to Lab7">
-      <change afterPath="$PROJECT_DIR$/.idea/modules.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/service/src/main/java/org/example/service/TriConsumer.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/compiler.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/compiler.xml" afterDir="false" />
+    <list default="true" id="e71a3d7c-4391-4995-8dbb-e24ef2ad2d90" name="Changes" comment="Connecting RMI functions in GUI">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/service/src/main/java/org/example/service/RMI/RMIDeliverer.java" beforeDir="false" afterPath="$PROJECT_DIR$/service/src/main/java/org/example/service/RMI/RMIDeliverer.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/service/src/main/java/org/example/service/RMI/RMISeller.java" beforeDir="false" afterPath="$PROJECT_DIR$/service/src/main/java/org/example/service/RMI/RMISeller.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/customer/src/main/java/org/example/customer/CustomerServer.java" beforeDir="false" afterPath="$PROJECT_DIR$/customer/src/main/java/org/example/customer/CustomerServer.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/deliverer/src/main/java/org/example/deliverer/DelivererServer.java" beforeDir="false" afterPath="$PROJECT_DIR$/deliverer/src/main/java/org/example/deliverer/DelivererServer.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/seller/src/main/java/org/example/seller/SellerServer.java" beforeDir="false" afterPath="$PROJECT_DIR$/seller/src/main/java/org/example/seller/SellerServer.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/shop/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/shop/pom.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/shop/src/main/java/module-info.java" beforeDir="false" afterPath="$PROJECT_DIR$/shop/src/main/java/module-info.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/shop/src/main/java/org/example/shop/Item.java" beforeDir="false" afterPath="$PROJECT_DIR$/shop/src/main/java/org/example/shop/Item.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -265,7 +266,21 @@
       <option name="project" value="LOCAL" />
       <updated>1706294513279</updated>
     </task>
-    <option name="localTasksCounter" value="14" />
+    <task id="LOCAL-00014" summary="Finishing RMI functions">
+      <created>1706295299268</created>
+      <option name="number" value="00014" />
+      <option name="presentableId" value="LOCAL-00014" />
+      <option name="project" value="LOCAL" />
+      <updated>1706295299268</updated>
+    </task>
+    <task id="LOCAL-00015" summary="Connecting RMI functions in GUI">
+      <created>1706296770285</created>
+      <option name="number" value="00015" />
+      <option name="presentableId" value="LOCAL-00015" />
+      <option name="project" value="LOCAL" />
+      <updated>1706296770285</updated>
+    </task>
+    <option name="localTasksCounter" value="16" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -297,16 +312,13 @@
     <MESSAGE value="Getting offer to the table and choosing products to order" />
     <MESSAGE value="Making RMIKeeper functions" />
     <MESSAGE value="Changing name from Lab6 to Lab7" />
-    <option name="LAST_COMMIT_MESSAGE" value="Changing name from Lab6 to Lab7" />
+    <MESSAGE value="Finishing RMI functions" />
+    <MESSAGE value="Connecting RMI functions in GUI" />
+    <option name="LAST_COMMIT_MESSAGE" value="Connecting RMI functions in GUI" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
       <breakpoints>
-        <line-breakpoint enabled="true" type="java-line">
-          <url>file://$PROJECT_DIR$/seller/src/main/java/org/example/seller/SellerServer.java</url>
-          <line>25</line>
-          <option name="timeStamp" value="24" />
-        </line-breakpoint>
         <breakpoint enabled="true" type="java-exception">
           <properties class="java.lang.NullPointerException" package="java.lang" />
           <option name="timeStamp" value="31" />

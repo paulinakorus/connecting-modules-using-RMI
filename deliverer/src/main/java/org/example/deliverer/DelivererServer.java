@@ -6,9 +6,16 @@ import org.example.service.model.enums.Method;
 import org.example.service.model.Product;
 import org.example.service.model.enums.OrderStatus;
 import org.example.service.model.enums.ProductStatus;
+import org.example.shop.IKeeper;
+import org.example.shop.Item;
 
-public class DelivererServer extends Server {
-    @Override
+import java.rmi.RemoteException;
+import java.util.List;
+
+public class DelivererServer /*extends Server*/ {
+    private IKeeper keeperServer;
+
+    /*@Override
     protected String execute(Method method, Object object) {
         try{
             Object obj = switch(method){
@@ -28,5 +35,9 @@ public class DelivererServer extends Server {
         }
         order.setOrderStatus(OrderStatus.Returned);
         return order;
+    }*/
+
+    public void returnOrderCallback(List<Item> items) throws RemoteException {
+        keeperServer.returnOrder(items);
     }
 }

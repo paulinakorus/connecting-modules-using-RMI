@@ -5,10 +5,16 @@ import org.example.service.model.*;
 import org.example.service.model.enums.Method;
 import org.example.service.model.enums.OrderStatus;
 import org.example.service.model.enums.ProductStatus;
+import org.example.shop.ICallback;
+import org.example.shop.Item;
 
-public class CustomerServer extends Server {
+import java.util.ArrayList;
+import java.util.List;
 
-    @Override
+public class CustomerServer /*extends Server*/ {
+
+    List<Item> localItemList = new ArrayList<>();
+    /*@Override
     protected String execute(Method method, Object object) {
         try{
             Object obj = switch(method){
@@ -27,16 +33,26 @@ public class CustomerServer extends Server {
     private String test(Product product){
         return product.getName();
     }
+    */
 
-    private OrderOld putOrder(OrderOld order){
+    public void putOrderCallback(ICallback callback, List<Item> items) {
+        // ?
+    }
+
+    /*private OrderOld putOrder(OrderOld order){
         for (Product product : order.getProductList()) {
             product.setProductStatus(ProductStatus.Bought);
         }
         order.setOrderStatus(OrderStatus.Bought);
         return order;//?
+    }*/
+
+    public void returnReceiptCallback(String receipt) {
+        System.out.println(receipt);
     }
 
-    private Receipt returnReceipt(Receipt receipt){
+    /*
+        private Receipt returnReceipt(Receipt receipt){
         return receipt;
-    }
+    }*/
 }

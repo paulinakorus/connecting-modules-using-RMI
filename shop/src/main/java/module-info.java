@@ -1,4 +1,5 @@
 module shop {
         requires transitive java.rmi;
-        exports org.example.shop;
+    requires service;
+    exports org.example.shop;
         }
