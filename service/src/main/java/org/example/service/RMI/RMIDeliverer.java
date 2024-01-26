@@ -14,7 +14,7 @@ public class RMIDeliverer extends UnicastRemoteObject implements IDeliverer {
 
     private Consumer<List<Item>> returnCallback;
     private BiConsumer<ICallback, List<Item>> responseCallback;
-    protected RMIDeliverer() throws RemoteException {
+    public RMIDeliverer() throws RemoteException {
     }
 
     @Override

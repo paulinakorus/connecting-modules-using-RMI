@@ -1,20 +1,32 @@
 package org.example.seller;
 
+import org.example.service.RMI.RMIDeliverer;
+import org.example.service.RMI.RMISeller;
+import org.example.service.TriConsumer;
 import org.example.service.clients.KeeperClientImpl;
 import org.example.service.clientsInterfaces.KeeperClient;
 import org.example.service.model.User;
 import org.example.service.model.enums.Role;
+import org.example.shop.*;
 
 import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.IOException;
+import java.rmi.NotBoundException;
+import java.rmi.RemoteException;
+import java.rmi.registry.LocateRegistry;
+import java.rmi.registry.Registry;
+import java.util.List;
 
 public class SellerGUI extends JFrame{
     private String host = "localhost";
     private SellerServer sellerServer = null;
     private KeeperClient keeperClient = new KeeperClientImpl(host, 2137);
     private User user;
+    public IKeeper keeperServer;
+    public ISeller seller = new RMISeller();
+    public int sellerId;
 
     private JPanel sellerPanel;
     private JLabel sellerLabel;
@@ -25,7 +37,7 @@ public class SellerGUI extends JFrame{
     private JLabel hostLabel;
     private JLabel portLabel;
 
-    public SellerGUI(){
+    public SellerGUI() throws RemoteException {
         this.setTitle("Seller");                                     // set title of frame
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);           // exit out off application
         this.setResizable(false);                                      // preventing frame from being resized
@@ -37,8 +49,26 @@ public class SellerGUI extends JFrame{
         setUpButtons();
     }
 
-    private void setUpAccept(){
+    public void resResponse(ICallback callback, List<Item> itemList) {
+        System.out.println(itemList.size());
+    }
 
+    public void resAcceptOrder(ICustomer iCustomer, List<Item> itemList, List<Item> itemList1) {
+        System.out.println("Accepting order");
+    }
+    public void connect() {
+        try {
+            Registry registry = LocateRegistry.getRegistry();                       // połączenie do serwera
+            keeperServer = (IKeeper) registry.lookup("Keeper");                                         // połączenie do serwera
+            sellerId = keeperServer.register(seller);
+
+            ((RMISeller) seller).setResponseCallback(this::resResponse);
+            ((RMISeller) seller).setAcceptOrderCallback(this::resAcceptOrder);
+
+            System.out.println(sellerId);
+        } catch (RemoteException | NotBoundException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     private void setUpButtons(){
@@ -47,7 +77,9 @@ public class SellerGUI extends JFrame{
             public void actionPerformed(ActionEvent actionEvent) {
                 if(actionEvent.getSource() == registerButton){
                     if(sellerServer == null){
-                        user = new User();
+                        connect();
+
+                        /*user = new User();
                         user.setRole(Role.Seller);
                         user.setHost(host);
                         user.setPort(Integer.valueOf(portTextField.getText()));
@@ -67,6 +99,7 @@ public class SellerGUI extends JFrame{
                             }
                         });
                         thread.start();
+                        */
                     }
                 }
             }

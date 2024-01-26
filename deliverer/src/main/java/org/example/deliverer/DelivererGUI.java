@@ -1,5 +1,7 @@
 package org.example.deliverer;
 
+import org.example.service.RMI.RMICustomer;
+import org.example.service.RMI.RMIDeliverer;
 import org.example.service.clients.KeeperClientImpl;
 import org.example.service.clientsInterfaces.KeeperClient;
 import org.example.service.model.OrderOld;
@@ -9,11 +11,16 @@ import org.example.service.model.enums.OrderStatus;
 import org.example.service.model.enums.ProductStatusAtSeller;
 import org.example.service.model.enums.Role;
 import org.example.service.model.tables.OrderTable;
+import org.example.shop.*;
 
 import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.IOException;
+import java.rmi.NotBoundException;
+import java.rmi.RemoteException;
+import java.rmi.registry.LocateRegistry;
+import java.rmi.registry.Registry;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -23,6 +30,9 @@ public class DelivererGUI extends JFrame{
     private KeeperClient keeperClient = new KeeperClientImpl(host, 2137);
     private User user;
     private OrderTable orderTableModel;
+    public IKeeper keeperServer;
+    public IDeliverer deliverer = new RMIDeliverer();
+    public int delivererID;
 
     private JPanel delivererPanel;
     private JLabel delivererLabel;
@@ -57,12 +67,36 @@ public class DelivererGUI extends JFrame{
         orderTable.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
     }
 
+    public void resResponse(ICallback callback, List<Item> itemList) {
+        System.out.println(itemList.size());
+    }
+
+    public void resReturnOrder(List<Item> itemList){
+        System.out.println("Returning order");
+    }
+    public void connect() {
+        try {
+            Registry registry = LocateRegistry.getRegistry();                       // połączenie do serwera
+            keeperServer = (IKeeper) registry.lookup("Keeper");                                         // połączenie do serwera
+            delivererID = keeperServer.register(deliverer);
+
+            ((RMIDeliverer) deliverer).setResponseCallback(this::resResponse);
+            ((RMIDeliverer) deliverer).setReturnCallback(this::resReturnOrder);
+
+            System.out.println(delivererID);
+        } catch (RemoteException | NotBoundException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
     private void setUpButtons(){
         registerButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent actionEvent) {
                 if(actionEvent.getSource() == registerButton){
                     if(delivererServer == null){
+                        connect();
+                        /*
                         user = new User();
                         user.setRole(Role.Deliver);
                         user.setHost(host);
@@ -84,6 +118,7 @@ public class DelivererGUI extends JFrame{
                             }
                         });
                         thread.start();
+                        */
                     }
                 }
             }

@@ -100,7 +100,7 @@ public class CustomerGUI extends JFrame {
         productsOrderTable.setSelectionMode(ListSelectionModel.MULTIPLE_INTERVAL_SELECTION);
     }
 
-    public void res(ICallback callback, List<Item> itemList) {
+    public void resResponse(ICallback callback, List<Item> itemList) {
         System.out.println(itemList.size());
     }
     public void resReceipt(String receipt){
@@ -117,12 +117,11 @@ public class CustomerGUI extends JFrame {
             keeperServer = (IKeeper) registry.lookup("Keeper");                                         // połączenie do serwera
             customerID = keeperServer.register(customer);
 
-            ((RMICustomer) customer).setResponseCallback(this::res);
+            ((RMICustomer) customer).setResponseCallback(this::resResponse);
             ((RMICustomer) customer).setReturnReceiptCallback(this::resReceipt);
             ((RMICustomer) customer).setPutOrderCallback(this::resPutOrder);
 
             System.out.println(customerID);
-            keeperServer.getOffer(customerID);
         } catch (RemoteException | NotBoundException e) {
             throw new RuntimeException(e);
         }
