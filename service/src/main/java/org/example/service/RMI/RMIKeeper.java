@@ -1,5 +1,7 @@
 package org.example.service.RMI;
 
+import org.example.service.model.Order;
+import org.example.service.model.enums.OrderStatus;
 import org.example.shop.*;
 
 import java.rmi.RemoteException;
@@ -8,10 +10,13 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 public class RMIKeeper implements IKeeper {
 
     Map<Integer, ICallback> userMap = new HashMap<>();
+    List<Item> itemList = new ArrayList<>();
+    List<Order> orderList = new ArrayList<>();
     private static int count = 0;
     public RMIKeeper() throws RemoteException {
     }
@@ -36,26 +41,69 @@ public class RMIKeeper implements IKeeper {
     @Override
     public void getOffer(int idc) throws RemoteException {
         var callback = (ICustomer) userMap.get(idc);
-        callback.response(null, new ArrayList<Item>(){{ new Item("a", 1);}});
+        List<Item> products = itemList.stream()
+                .filter(product -> product.getQuantity()>0)
+                .toList();
+
+        callback.response(null, products);
     }
 
     @Override
     public void putOrder(int idc, List<Item> itemList) throws RemoteException {
+        var callback = (ICustomer) userMap.get(idc);
+        Order order = new Order();
+        order.setUser(callback);
+        List<Item> itemOrderList = new ArrayList<>();
 
+        for (Item item : itemList){
+            var itemInWarehause = ifTheSameProducts(item);
+            if(itemInWarehause == null)
+                continue;
+
+            int quantity = itemInWarehause.getQuantity() - item.getQuantity();
+            if(quantity < 0){
+                item.setQuantity(itemInWarehause.getQuantity());
+                itemInWarehause.setQuantity(0);
+            }else{
+                item.setQuantity(quantity);
+                itemInWarehause.setQuantity(itemInWarehause.getQuantity() - quantity);
+            }
+            itemOrderList.add(item);
+        }
+        order.setItemList(itemOrderList);
+        orderList.add(order);
     }
 
-    @Override
-    public List<ISeller> getSellers() throws RemoteException {
+    public Item ifTheSameProducts(Item ourItem){
+        for (Item item : itemList) {
+            if(item.getDescription().equals(ourItem.getDescription()))
+                return item;
+        }
         return null;
     }
 
     @Override
-    public void getOrder(int idd) throws RemoteException {
-
+    public List<ISeller> getSellers() throws RemoteException {
+        List<ISeller> sellerList = userMap.values().stream().filter(user -> user instanceof ISeller).map(user -> (ISeller) user).collect(Collectors.toList());
+        return sellerList;
     }
 
     @Override
-    public void returnOrder(List<Item> itemList) throws RemoteException {
+    public void getOrder(int idd) throws RemoteException {
+        var callback = (IDeliverer) userMap.get(idd);
+        Order firstAvaiableOrder = orderList.stream()
+                .filter(order -> order.getOrderStatus() == OrderStatus.NotServed)
+                .findFirst()
+                .orElse(null);
+    }
 
+    @Override
+    public void returnOrder(List<Item> itemReturnedList) throws RemoteException {
+        for (Item itemToReturn : itemReturnedList) {
+            var itemInWarehouse = ifTheSameProducts(itemToReturn);
+            if(itemInWarehouse != null){
+                itemInWarehouse.setQuantity(itemInWarehouse.getQuantity() + itemToReturn.getQuantity());
+            }
+        }
     }
 }

@@ -55,48 +55,48 @@ public class KeeperClientImpl extends Client implements org.example.service.clie
     }
 
     @Override
-    public Order updateOrder(Order order) throws IOException {
+    public OrderOld updateOrder(OrderOld order) throws IOException {
         data = objectMapper.writeValueAsString(order);
         payload.setArgument(data);
         payload.setMethod(Method.UpdateOrder);
 
         payloadString = objectMapper.writeValueAsString(payload);
         var result = this.sendAndRead(payloadString);
-        var order_result = objectMapper.readValue(result, Order.class);
+        var order_result = objectMapper.readValue(result, OrderOld.class);
         System.out.println("Updating order");
         return order_result;
     }
 
-    public Order putOrder(Order order) throws IOException {
+    public OrderOld putOrder(OrderOld order) throws IOException {
         data = objectMapper.writeValueAsString(order);
         payload.setArgument(data);
         payload.setMethod(Method.PutOrder);
 
         payloadString = objectMapper.writeValueAsString(payload);
         var result = this.sendAndRead(payloadString);
-        var order_result = objectMapper.readValue(result, Order.class);
+        var order_result = objectMapper.readValue(result, OrderOld.class);
         System.out.println("Putting order");
         return order_result;
     }
 
-    public Order getOrder() throws IOException {
+    public OrderOld getOrder() throws IOException {
         payload.setArgument(null);
         payload.setMethod(Method.GetOrder);
 
         payloadString = objectMapper.writeValueAsString(payload);
         var result = this.sendAndRead(payloadString);
-        var order_result = objectMapper.readValue(result, Order.class);
+        var order_result = objectMapper.readValue(result, OrderOld.class);
         System.out.println("Getting order");
         return order_result;
     }
 
-    public List<Order> getOrders() throws IOException {
+    public List<OrderOld> getOrders() throws IOException {
         payload.setArgument(null);
         payload.setMethod(Method.GetOrders);
 
         payloadString = objectMapper.writeValueAsString(payload);
         var result = this.sendAndRead(payloadString);
-        var orders_result = objectMapper.readValue(result, Order[].class);
+        var orders_result = objectMapper.readValue(result, OrderOld[].class);
         System.out.println("Getting orders");
         return List.of(orders_result);
     }
@@ -125,7 +125,7 @@ public class KeeperClientImpl extends Client implements org.example.service.clie
         return user_result;
     }
 
-    public List<Product> returnOrder(Order order) throws IOException {
+    public List<Product> returnOrder(OrderOld order) throws IOException {
         data = objectMapper.writeValueAsString(order);
         payload.setArgument(data);
         payload.setMethod(Method.ReturnOrder);

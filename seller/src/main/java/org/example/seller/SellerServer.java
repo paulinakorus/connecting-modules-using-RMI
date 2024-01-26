@@ -1,21 +1,18 @@
 package org.example.seller;
 
 import org.example.service.Server;
-import org.example.service.model.Order;
-import org.example.service.model.User;
+import org.example.service.model.OrderOld;
 import org.example.service.model.enums.Method;
 import org.example.service.model.Product;
 import org.example.service.model.enums.ProductStatus;
 import org.example.service.model.enums.ProductStatusAtSeller;
-
-import java.util.List;
 
 public class SellerServer extends Server {
     @Override
     protected String execute(Method method, Object object) {
         try{
             Object obj = switch(method){
-                case AcceptOrder -> acceptOrder((Order) object);
+                case AcceptOrder -> acceptOrder((OrderOld) object);
                 default -> throw new RuntimeException("Unexcepted method");
             };
             return objectMapper.writeValueAsString(obj);
@@ -25,7 +22,7 @@ public class SellerServer extends Server {
         return null;
     }
 
-    private Order acceptOrder(Order order){
+    private OrderOld acceptOrder(OrderOld order){
         for (Product product : order.getProductList()) {
             if(product.getProductStatusAtSeller() == ProductStatusAtSeller.ToBought)
                 product.setProductStatus(ProductStatus.Bought);

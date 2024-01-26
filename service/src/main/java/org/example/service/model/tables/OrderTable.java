@@ -1,6 +1,6 @@
 package org.example.service.model.tables;
 
-import org.example.service.model.Order;
+import org.example.service.model.OrderOld;
 
 import javax.swing.table.AbstractTableModel;
 import java.util.Comparator;
@@ -8,9 +8,9 @@ import java.util.List;
 
 public class OrderTable extends AbstractTableModel {
     private final String[] COLUMNS = new String[]{"Id", "Status", "Products amount"};
-    private List<Order> orderList;
+    private List<OrderOld> orderList;
 
-    public OrderTable(List<Order> orderList){
+    public OrderTable(List<OrderOld> orderList){
         this.orderList = orderList.stream().sorted(Comparator.comparing(c -> c.getOrderID())).toList();
     }
 
@@ -29,7 +29,7 @@ public class OrderTable extends AbstractTableModel {
         if(rowIndex == -1) {
             return "-";
         }
-        Order order = orderList.get(rowIndex);
+        OrderOld order = orderList.get(rowIndex);
         if(order == null) {
             return "-";
         }

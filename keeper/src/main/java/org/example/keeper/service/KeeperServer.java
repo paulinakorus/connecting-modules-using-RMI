@@ -8,7 +8,6 @@ import org.example.service.model.enums.ProductStatus;
 import org.example.service.model.enums.Role;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 import java.util.UUID;
 
@@ -18,7 +17,7 @@ import static java.util.Arrays.stream;
 public class KeeperServer extends Server {
     private List<User> wholeUserList;
     private List<Product> wholeProductList;
-    private List<Order> wholeOrderList;
+    private List<OrderOld> wholeOrderList;
 
     public KeeperServer(){
         wholeProductList = new ArrayList<>();
@@ -54,13 +53,13 @@ public class KeeperServer extends Server {
                 case Register -> register((User) object);
                 case Unregister -> unregister((UUID) object);
                 case GetOffer -> getOffer();
-                case PutOrder -> putOrder((Order) object);
-                case ReturnOrder -> returnOrder((Order) object);
+                case PutOrder -> putOrder((OrderOld) object);
+                case ReturnOrder -> returnOrder((OrderOld) object);
                 case GetInfo -> getInfo((Integer) object);
                 case GetInfoByUserRole -> getInfoByUserRole((Role) object);
                 case GetOrder -> getOrder();
                 case GetOrders -> getOrders();
-                case UpdateOrder -> updateOrder((Order) object);
+                case UpdateOrder -> updateOrder((OrderOld) object);
 
                 default -> throw new RuntimeException("Unexcepted method");
             };
@@ -104,7 +103,7 @@ public class KeeperServer extends Server {
         return offerList;
     }
 
-    private Order putOrder(Order order){
+    private OrderOld putOrder(OrderOld order){
         wholeOrderList.add(order);
         order.setOrderStatus(OrderStatus.NotServed);
 
@@ -122,25 +121,25 @@ public class KeeperServer extends Server {
         return order;       //?
     }
 
-    private Order getOrder(){
+    private OrderOld getOrder(){
         return wholeOrderList.stream()
                 .filter(order -> order.getOrderStatus() == OrderStatus.NotServed)
                 .findFirst()
                 .orElse(null);
     }
 
-    private List<Order> getOrders(){
+    private List<OrderOld> getOrders(){
         return wholeOrderList;
     }
 
-    private Order updateOrder(Order order) {
+    private OrderOld updateOrder(OrderOld order) {
         var ord = wholeOrderList.stream().filter(o -> o.getOrderID().equals(order.getOrderID())).findFirst().orElse(null);
         var index = wholeOrderList.indexOf(ord);
         wholeOrderList.set(index, order);
         return ord;
     }
 
-    private List<Product> returnOrder(Order order){
+    private List<Product> returnOrder(OrderOld order){
         List<UUID> returnedID = order.getProductList().stream()
                 .filter(product -> product.getProductStatus() == ProductStatus.Returned)
                 .map(Product::getId)

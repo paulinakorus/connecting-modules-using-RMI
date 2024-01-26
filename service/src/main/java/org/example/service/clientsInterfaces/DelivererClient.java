@@ -1,10 +1,10 @@
 package org.example.service.clientsInterfaces;
 
-import org.example.service.model.Order;
+import org.example.service.model.OrderOld;
 
 import java.io.IOException;
 
 public interface DelivererClient {
 
-    public Order returnOrder(Order order) throws IOException;
+    public OrderOld returnOrder(OrderOld order) throws IOException;
 }

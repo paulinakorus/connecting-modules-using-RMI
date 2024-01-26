@@ -3,7 +3,7 @@ package org.example.service.clients;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.example.service.Client;
 import org.example.service.clientsInterfaces.CustomerClient;
-import org.example.service.model.Order;
+import org.example.service.model.OrderOld;
 import org.example.service.model.Payload;
 import org.example.service.model.Receipt;
 import org.example.service.model.enums.Method;
@@ -32,14 +32,14 @@ public class CustomerClientImpl extends Client implements CustomerClient {
                 return receipt;
         }
 
-        public Order putOrder(Order order) throws IOException {
+        public OrderOld putOrder(OrderOld order) throws IOException {
                 data = objectMapper.writeValueAsString(order);
                 payload.setArgument(data);
                 payload.setMethod(Method.PutOrder);
 
                 payloadString = objectMapper.writeValueAsString(payload);
                 var result = this.sendAndRead(payloadString);
-                var order_result = objectMapper.readValue(result, Order.class);
+                var order_result = objectMapper.readValue(result, OrderOld.class);
                 System.out.println("Buying all order products");
                 return order_result;
         }

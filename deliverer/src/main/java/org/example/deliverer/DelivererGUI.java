@@ -2,7 +2,7 @@ package org.example.deliverer;
 
 import org.example.service.clients.KeeperClientImpl;
 import org.example.service.clientsInterfaces.KeeperClient;
-import org.example.service.model.Order;
+import org.example.service.model.OrderOld;
 import org.example.service.model.Product;
 import org.example.service.model.User;
 import org.example.service.model.enums.OrderStatus;
@@ -49,7 +49,7 @@ public class DelivererGUI extends JFrame{
     }
 
     private void setUpOrderTable() throws IOException {
-        List<Order> orderList = new ArrayList<>();
+        List<OrderOld> orderList = new ArrayList<>();
         orderList.add(keeperClient.getOrder());
         orderTableModel = new OrderTable(orderList);
         orderTable.setModel(orderTableModel);
@@ -107,7 +107,7 @@ public class DelivererGUI extends JFrame{
             @Override
             public void actionPerformed(ActionEvent e) {
                 try {
-                    Order order = keeperClient.getOrder();
+                    OrderOld order = keeperClient.getOrder();
                     for (Product product : order.getProductList()) {
                         product.setProductStatusAtSeller(ProductStatusAtSeller.ToBought);
                     }

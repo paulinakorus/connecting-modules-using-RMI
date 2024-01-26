@@ -1,6 +1,6 @@
 package org.example.service.model.enums;
 
-import org.example.service.model.Order;
+import org.example.service.model.OrderOld;
 import org.example.service.model.Product;
 import org.example.service.model.Receipt;
 import org.example.service.model.User;
@@ -13,14 +13,14 @@ public enum Method {
     Unregister(UUID.class),
     GetOrder(),
     GetOrders(),
-    ReturnOrder(Order.class),
+    ReturnOrder(OrderOld.class),
     GetInfo(Integer.class),
     GetInfoByUserRole(Role.class),
     GetOffer(),
-    PutOrder(Order.class),
+    PutOrder(OrderOld.class),
     ReturnReceipt(Receipt.class),
-    AcceptOrder(Order.class),
-    UpdateOrder(Order.class);
+    AcceptOrder(OrderOld.class),
+    UpdateOrder(OrderOld.class);
     private final Class<?> type;
 
     Method(Class<?> type) {

@@ -7,7 +7,7 @@ import org.example.service.clients.SellerClientImpl;
 import org.example.service.clientsInterfaces.DelivererClient;
 import org.example.service.clientsInterfaces.KeeperClient;
 import org.example.service.clientsInterfaces.SellerClient;
-import org.example.service.model.Order;
+import org.example.service.model.OrderOld;
 import org.example.service.model.Product;
 import org.example.service.model.enums.ProductStatus;
 import org.example.service.model.enums.ProductStatusAtSeller;
@@ -103,13 +103,24 @@ public class CustomerGUI extends JFrame {
     public void res(ICallback callback, List<Item> itemList) {
         System.out.println(itemList.size());
     }
+    public void resReceipt(String receipt){
+        System.out.println(receipt);
+    }
+
+    public void resPutOrder(ICallback callback, List<Item> itemList){
+        System.out.println(itemList.size());
+    }
 
     public void connect() {
         try {
             Registry registry = LocateRegistry.getRegistry();                       // połączenie do serwera
             keeperServer = (IKeeper) registry.lookup("Keeper");                                         // połączenie do serwera
             customerID = keeperServer.register(customer);
+
             ((RMICustomer) customer).setResponseCallback(this::res);
+            ((RMICustomer) customer).setReturnReceiptCallback(this::resReceipt);
+            ((RMICustomer) customer).setPutOrderCallback(this::resPutOrder);
+
             System.out.println(customerID);
             keeperServer.getOffer(customerID);
         } catch (RemoteException | NotBoundException e) {
@@ -168,7 +179,7 @@ public class CustomerGUI extends JFrame {
             @Override
             public void actionPerformed(ActionEvent actionEvent) {
                 if(actionEvent.getSource() == orderButton){
-                    Order order = new Order();
+                    OrderOld order = new OrderOld();
                     order.setUserID(user.getId());
 
                     List<Product> sellectedProducts = new ArrayList<>();
@@ -200,8 +211,8 @@ public class CustomerGUI extends JFrame {
                     var orderID = (UUID) ordersTable.getValueAt(sellectedRow, 0);
 
                     try {
-                        List<Order> orderList = keeperClient.getOrders();
-                        for (Order oneOrder : orderList) {
+                        List<OrderOld> orderList = keeperClient.getOrders();
+                        for (OrderOld oneOrder : orderList) {
                             if(oneOrder.getOrderID().equals(orderID)){
                                 setUpOrderProductsTable(oneOrder.getProductList());
                             }
@@ -224,8 +235,8 @@ public class CustomerGUI extends JFrame {
                     var orderID = (UUID) ordersTable.getValueAt(sellectedRowOrder, 0);
 
                     try {
-                        List<Order> orderList = keeperClient.getOrders();
-                        for (Order oneOrder : orderList) {
+                        List<OrderOld> orderList = keeperClient.getOrders();
+                        for (OrderOld oneOrder : orderList) {
                             if(oneOrder.getOrderID().equals(orderID)){
                                 for (Product product : oneOrder.getProductList()) {
                                     if(product.getId().equals(productID)){
@@ -258,8 +269,8 @@ public class CustomerGUI extends JFrame {
                     var orderID = (UUID) ordersTable.getValueAt(sellectedRowOrder, 0);
 
                     try {
-                        List<Order> orderList = keeperClient.getOrders();
-                        for (Order oneOrder : orderList) {
+                        List<OrderOld> orderList = keeperClient.getOrders();
+                        for (OrderOld oneOrder : orderList) {
                             if(oneOrder.getOrderID().equals(orderID)){
                                 for (Product product : oneOrder.getProductList()) {
                                     if(product.getId().equals(productID)){
@@ -294,8 +305,8 @@ public class CustomerGUI extends JFrame {
                     var orderID = (UUID) ordersTable.getValueAt(sellectedRow, 0);
 
                     try {
-                        List<Order> orderList = keeperClient.getOrders();
-                        for (Order oneOrder : orderList) {
+                        List<OrderOld> orderList = keeperClient.getOrders();
+                        for (OrderOld oneOrder : orderList) {
                             if(oneOrder.getOrderID().equals(orderID)){
                                 delivererClient = new DelivererClientImpl(host, keeperClient.getInfoByUserRole(Role.Deliver).getPort());
                                 oneOrder = delivererClient.returnOrder(oneOrder);
