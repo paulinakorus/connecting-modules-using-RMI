@@ -49,15 +49,12 @@ public class CustomerGUI extends JFrame {
     private JPanel productsPanel;
     private JPanel ordersPanel;
     private JTextField hostTextField;
-    private JTextField portTextField;
     private JButton registerButton;
     private JButton unregisterButton;
     private JList productsList;
     private JButton orderButton;
     private JButton returnButton;
     private JButton payButton;
-    private JLabel hostLabel;
-    private JLabel portLabel;
     private JLabel customerLabel;
     private JTable productsTable;
     private JTable ordersTable;

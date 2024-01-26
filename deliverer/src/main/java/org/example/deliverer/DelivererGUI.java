@@ -36,11 +36,8 @@ public class DelivererGUI extends JFrame{
     private JPanel delivererPanel;
     private JLabel delivererLabel;
     private JTextField hostTextField;
-    private JTextField portTextField;
     private JButton registerButton;
     private JButton unregisterButton;
-    private JLabel portLabel;
-    private JLabel hostLabel;
     private JButton buyAllProductsButton;
     private JTable orderTable;
     private JButton getOrderButton;

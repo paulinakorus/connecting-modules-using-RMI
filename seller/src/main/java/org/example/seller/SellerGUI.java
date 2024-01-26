@@ -31,11 +31,8 @@ public class SellerGUI extends JFrame{
     private JPanel sellerPanel;
     private JLabel sellerLabel;
     private JTextField hostTextField;
-    private JTextField portTextField;
     private JButton unregisterButton;
     private JButton registerButton;
-    private JLabel hostLabel;
-    private JLabel portLabel;
 
     public SellerGUI() throws RemoteException {
         this.setTitle("Seller");                                     // set title of frame
