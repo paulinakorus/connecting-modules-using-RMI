@@ -17,7 +17,7 @@ public class KeeperGUI extends JFrame{
     private JPanel keeperPanel;
     private JLabel keeperLabel;
     private JLabel serverStartedLabel;
-    private KeeperServer keeperServer = null;
+    private IKeeper keeperServer = null;
 
     public KeeperGUI(){
         this.setTitle("Keeper");                                     // set title of frame
@@ -37,7 +37,7 @@ public class KeeperGUI extends JFrame{
                 if(actionEvent.getSource() == startButton){
                     if(keeperServer == null){
                         try {
-                            IKeeper keeperServer = new RMIKeeper();
+                            keeperServer = new RMIKeeper();
                             IKeeper serverStub = (IKeeper) UnicastRemoteObject.exportObject(keeperServer, 0);      // 0 - pierwzy lepszy
                             Registry registry = LocateRegistry.createRegistry(1099);                               // zmienna ktora trzyma wszystkie implementacje w serwerze, ustawienie go na porcie 1099
                             registry.rebind("Keeper", serverStub);
@@ -45,17 +45,7 @@ public class KeeperGUI extends JFrame{
                             throw new RuntimeException(e);
                         }
 
-                        /*Thread thread = new Thread(() -> {
-                            keeperServer = new KeeperServer();
-                            try {
-                                keeperServer.start();
-
-                            } catch (IOException e) {
-                                throw new RuntimeException(e);
-                            }
-                        });*/
                         serverStartedLabel.setText("Server is started");
-                        //thread.start();
                     }
                 }
             }

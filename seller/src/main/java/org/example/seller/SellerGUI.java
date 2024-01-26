@@ -18,10 +18,10 @@ import java.rmi.RemoteException;
 import java.rmi.registry.LocateRegistry;
 import java.rmi.registry.Registry;
 import java.util.List;
+import java.util.Random;
 
 public class SellerGUI extends JFrame{
     private String host = "localhost";
-    private SellerServer sellerServer = null;
     private KeeperClient keeperClient = new KeeperClientImpl(host, 2137);
     private User user;
     public IKeeper keeperServer;
@@ -76,30 +76,8 @@ public class SellerGUI extends JFrame{
             @Override
             public void actionPerformed(ActionEvent actionEvent) {
                 if(actionEvent.getSource() == registerButton){
-                    if(sellerServer == null){
+                    if(seller == null){
                         connect();
-
-                        /*user = new User();
-                        user.setRole(Role.Seller);
-                        user.setHost(host);
-                        user.setPort(Integer.valueOf(portTextField.getText()));
-
-                        try {
-                            keeperClient.register(user);
-                        } catch (IOException e) {
-                            throw new RuntimeException(e);
-                        }
-
-                        Thread thread = new Thread(() -> {
-                            sellerServer = new SellerServer();
-                            try {
-                                sellerServer.start(user.getHost(), user.getPort());
-                            } catch (IOException e) {
-                                throw new RuntimeException(e);
-                            }
-                        });
-                        thread.start();
-                        */
                     }
                 }
             }
@@ -110,13 +88,18 @@ public class SellerGUI extends JFrame{
             public void actionPerformed(ActionEvent actionEvent) {
                 if(actionEvent.getSource() == unregisterButton){
                     try {
-                        if(user != null)
-                            keeperClient.unregister(user.getId());
+                        if(seller != null)
+                            keeperServer.unregister(sellerId);
                     } catch (IOException e) {
                         throw new RuntimeException(e);
                     }
                 }
             }
         });
+    }
+
+    public void acceptOrderCallback(ICustomer customer, List<Item> boughtItems, List<Item> returnedItems) throws RemoteException {
+        keeperServer.returnOrder(returnedItems);
+        customer.returnReceipt("Quantity: " + boughtItems.size() + " Cost: " + new Random().nextInt(1, 100)*10);
     }
 }

@@ -92,9 +92,11 @@ public class RMIKeeper implements IKeeper {
     public void getOrder(int idd) throws RemoteException {
         var callback = (IDeliverer) userMap.get(idd);
         Order firstAvaiableOrder = orderList.stream()
-                .filter(order -> order.getOrderStatus() == OrderStatus.NotServed)
                 .findFirst()
                 .orElse(null);
+        if(firstAvaiableOrder == null)
+            return;
+        callback.response(firstAvaiableOrder.getUser(), firstAvaiableOrder.getItemList());
     }
 
     @Override

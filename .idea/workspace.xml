@@ -9,14 +9,18 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="e71a3d7c-4391-4995-8dbb-e24ef2ad2d90" name="Changes" comment="Connecting RMI functions in GUI">
+    <list default="true" id="e71a3d7c-4391-4995-8dbb-e24ef2ad2d90" name="Changes" comment="Changing nonKeepers classes' functions">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/customer/src/main/java/org/example/customer/CustomerServer.java" beforeDir="false" afterPath="$PROJECT_DIR$/customer/src/main/java/org/example/customer/CustomerServer.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/deliverer/src/main/java/org/example/deliverer/DelivererServer.java" beforeDir="false" afterPath="$PROJECT_DIR$/deliverer/src/main/java/org/example/deliverer/DelivererServer.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/seller/src/main/java/org/example/seller/SellerServer.java" beforeDir="false" afterPath="$PROJECT_DIR$/seller/src/main/java/org/example/seller/SellerServer.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/shop/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/shop/pom.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/shop/src/main/java/module-info.java" beforeDir="false" afterPath="$PROJECT_DIR$/shop/src/main/java/module-info.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/shop/src/main/java/org/example/shop/Item.java" beforeDir="false" afterPath="$PROJECT_DIR$/shop/src/main/java/org/example/shop/Item.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/customer/src/main/java/org/example/customer/CustomerGUI.java" beforeDir="false" afterPath="$PROJECT_DIR$/customer/src/main/java/org/example/customer/CustomerGUI.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/customer/src/main/java/org/example/customer/CustomerServer.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/deliverer/src/main/java/org/example/deliverer/DelivererGUI.java" beforeDir="false" afterPath="$PROJECT_DIR$/deliverer/src/main/java/org/example/deliverer/DelivererGUI.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/deliverer/src/main/java/org/example/deliverer/DelivererServer.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/keeper/src/main/java/org/example/keeper/service/KeeperGUI.java" beforeDir="false" afterPath="$PROJECT_DIR$/keeper/src/main/java/org/example/keeper/service/KeeperGUI.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/keeper/src/main/java/org/example/keeper/service/KeeperServer.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/seller/src/main/java/org/example/seller/SellerGUI.java" beforeDir="false" afterPath="$PROJECT_DIR$/seller/src/main/java/org/example/seller/SellerGUI.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/seller/src/main/java/org/example/seller/SellerServer.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/service/src/main/java/org/example/service/RMI/RMIKeeper.java" beforeDir="false" afterPath="$PROJECT_DIR$/service/src/main/java/org/example/service/RMI/RMIKeeper.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/service/src/main/java/org/example/service/model/Order.java" beforeDir="false" afterPath="$PROJECT_DIR$/service/src/main/java/org/example/service/model/Order.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -280,7 +284,14 @@
       <option name="project" value="LOCAL" />
       <updated>1706296770285</updated>
     </task>
-    <option name="localTasksCounter" value="16" />
+    <task id="LOCAL-00016" summary="Changing nonKeepers classes' functions">
+      <created>1706304871391</created>
+      <option name="number" value="00016" />
+      <option name="presentableId" value="LOCAL-00016" />
+      <option name="project" value="LOCAL" />
+      <updated>1706304871391</updated>
+    </task>
+    <option name="localTasksCounter" value="17" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -314,7 +325,8 @@
     <MESSAGE value="Changing name from Lab6 to Lab7" />
     <MESSAGE value="Finishing RMI functions" />
     <MESSAGE value="Connecting RMI functions in GUI" />
-    <option name="LAST_COMMIT_MESSAGE" value="Connecting RMI functions in GUI" />
+    <MESSAGE value="Changing nonKeepers classes' functions" />
+    <option name="LAST_COMMIT_MESSAGE" value="Changing nonKeepers classes' functions" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>

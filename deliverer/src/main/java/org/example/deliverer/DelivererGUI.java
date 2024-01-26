@@ -26,7 +26,6 @@ import java.util.List;
 
 public class DelivererGUI extends JFrame{
     private String host = "localhost";
-    private DelivererServer delivererServer = null;
     private KeeperClient keeperClient = new KeeperClientImpl(host, 2137);
     private User user;
     private OrderTable orderTableModel;
@@ -67,7 +66,7 @@ public class DelivererGUI extends JFrame{
         orderTable.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
     }
 
-    public void resResponse(ICallback callback, List<Item> itemList) {
+    public void resResponse(ICallback user, List<Item> itemList) {
         System.out.println(itemList.size());
     }
 
@@ -94,31 +93,8 @@ public class DelivererGUI extends JFrame{
             @Override
             public void actionPerformed(ActionEvent actionEvent) {
                 if(actionEvent.getSource() == registerButton){
-                    if(delivererServer == null){
+                    if(deliverer == null){
                         connect();
-                        /*
-                        user = new User();
-                        user.setRole(Role.Deliver);
-                        user.setHost(host);
-                        user.setPort(Integer.valueOf(portTextField.getText()));
-
-                        try {
-                            keeperClient.register(user);
-                            setUpOrderTable();
-                        } catch (IOException e) {
-                            throw new RuntimeException(e);
-                        }
-
-                        Thread thread = new Thread(() -> {
-                            delivererServer = new DelivererServer();
-                            try {
-                                delivererServer.start(user.getHost(), user.getPort());
-                            } catch (IOException e) {
-                                throw new RuntimeException(e);
-                            }
-                        });
-                        thread.start();
-                        */
                     }
                 }
             }
@@ -129,8 +105,8 @@ public class DelivererGUI extends JFrame{
             public void actionPerformed(ActionEvent actionEvent) {
                 if(actionEvent.getSource() == unregisterButton){
                     try {
-                        if(user != null)
-                            keeperClient.unregister(user.getId());
+                        if(deliverer != null)
+                            keeperServer.unregister(delivererID);
                     } catch (IOException e) {
                         throw new RuntimeException(e);
                     }
@@ -159,6 +135,7 @@ public class DelivererGUI extends JFrame{
             public void actionPerformed(ActionEvent actionEvent) {
                 if(actionEvent.getSource() == getOrderButton){
                     try {
+                        keeperServer.getOrder(delivererID);
                         setUpOrderTable();
                     } catch (IOException e) {
                         throw new RuntimeException(e);
@@ -166,5 +143,9 @@ public class DelivererGUI extends JFrame{
                 }
             }
         });
+    }
+
+    public void returnOrderCallback(List<Item> items) throws RemoteException {
+        keeperServer.returnOrder(items);
     }
 }

@@ -34,7 +34,6 @@ import java.util.UUID;
 
 public class CustomerGUI extends JFrame {
     private String host = "localhost";
-    private CustomerServer customerServer = null;
     private KeeperClient keeperClient = new KeeperClientImpl(host, 2137);
     private SellerClient sellerClient;
     private DelivererClient delivererClient;
@@ -132,29 +131,8 @@ public class CustomerGUI extends JFrame {
             @Override
             public void actionPerformed(ActionEvent actionEvent) {
                 if(actionEvent.getSource() == registerButton){
-                    if(customerServer == null){
+                    if(customer == null){
                         connect();
-                        /*user = new User();
-                        user.setRole(Role.Customer);
-                        user.setHost(host);
-                        user.setPort(Integer.valueOf(portTextField.getText()));
-
-                        try {
-                            keeperClient.register(user);
-                            setUpProductsTable();
-                        } catch (IOException e) {
-                            throw new RuntimeException(e);
-                        }*/
-
-                        /*Thread thread = new Thread(() -> {
-                            customerServer = new CustomerServer();
-                            try {
-                                customerServer.start(user.getHost(), user.getPort());
-                            } catch (IOException e) {
-                                throw new RuntimeException(e);
-                            }
-                        });
-                        thread.start();*/
                     }
                 }
             }
@@ -165,8 +143,8 @@ public class CustomerGUI extends JFrame {
             public void actionPerformed(ActionEvent actionEvent) {
                 if(actionEvent.getSource() == unregisterButton){
                     try {
-                        if(user != null)
-                            keeperClient.unregister(user.getId());
+                        if(customer != null)
+                            keeperServer.unregister(customerID);
                     } catch (IOException e) {
                         throw new RuntimeException(e);
                     }
@@ -334,5 +312,12 @@ public class CustomerGUI extends JFrame {
                 }
             }
         });
+    }
+
+    public void putOrderCallback(ICallback callback, List<Item> items) {
+        // ?
+    }
+    public void returnReceiptCallback(String receipt) {
+        System.out.println(receipt);
     }
 }

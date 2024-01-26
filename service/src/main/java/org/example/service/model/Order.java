@@ -9,7 +9,6 @@ import java.util.List;
 public class Order {
     private ICallback user;
     private List<Item> itemList;
-    private OrderStatus orderStatus;
 
     public ICallback getUser() {
         return user;
@@ -25,13 +24,5 @@ public class Order {
 
     public void setItemList(List<Item> itemList) {
         this.itemList = itemList;
-    }
-
-    public OrderStatus getOrderStatus() {
-        return orderStatus;
-    }
-
-    public void setOrderStatus(OrderStatus orderStatus) {
-        this.orderStatus = orderStatus;
     }
 }
