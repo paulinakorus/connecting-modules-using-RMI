@@ -15,6 +15,7 @@
       </profile>
     </annotationProcessing>
     <bytecodeTargetLevel>
+      <module name="Lab06" target="17" />
       <module name="Multithreading-during-inter-server-connection" target="17" />
     </bytecodeTargetLevel>
   </component>

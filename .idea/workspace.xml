@@ -9,7 +9,14 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="e71a3d7c-4391-4995-8dbb-e24ef2ad2d90" name="Changes" comment="Getting offer to the table and choosing products to order" />
+    <list default="true" id="e71a3d7c-4391-4995-8dbb-e24ef2ad2d90" name="Changes" comment="Changing name from Lab6 to Lab7">
+      <change afterPath="$PROJECT_DIR$/.idea/modules.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/service/src/main/java/org/example/service/TriConsumer.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/compiler.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/compiler.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/service/src/main/java/org/example/service/RMI/RMIDeliverer.java" beforeDir="false" afterPath="$PROJECT_DIR$/service/src/main/java/org/example/service/RMI/RMIDeliverer.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/service/src/main/java/org/example/service/RMI/RMISeller.java" beforeDir="false" afterPath="$PROJECT_DIR$/service/src/main/java/org/example/service/RMI/RMISeller.java" afterDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -18,9 +25,9 @@
   <component name="FileTemplateManagerImpl">
     <option name="RECENT_TEMPLATES">
       <list>
-        <option value="Interface" />
         <option value="module-info" />
         <option value="Class" />
+        <option value="Interface" />
       </list>
     </option>
   </component>
@@ -53,7 +60,7 @@
     "WebServerToolWindowFactoryState": "false",
     "git-widget-placeholder": "master",
     "jdk.selected.JAVA_MODULE": "17",
-    "last_opened_file_path": "C:/Users/pauko/Desktop/Lab06",
+    "last_opened_file_path": "C:/Users/pauko/Desktop/Lab07/Lab07",
     "node.js.detected.package.eslint": "true",
     "node.js.detected.package.tslint": "true",
     "node.js.selected.package.eslint": "(autodetect)",
@@ -244,7 +251,21 @@
       <option name="project" value="LOCAL" />
       <updated>1705170988415</updated>
     </task>
-    <option name="localTasksCounter" value="12" />
+    <task id="LOCAL-00012" summary="Making RMIKeeper functions">
+      <created>1706294417643</created>
+      <option name="number" value="00012" />
+      <option name="presentableId" value="LOCAL-00012" />
+      <option name="project" value="LOCAL" />
+      <updated>1706294417643</updated>
+    </task>
+    <task id="LOCAL-00013" summary="Changing name from Lab6 to Lab7">
+      <created>1706294513279</created>
+      <option name="number" value="00013" />
+      <option name="presentableId" value="LOCAL-00013" />
+      <option name="project" value="LOCAL" />
+      <updated>1706294513279</updated>
+    </task>
+    <option name="localTasksCounter" value="14" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -274,7 +295,9 @@
     <MESSAGE value="Finishing registering and unregistering" />
     <MESSAGE value="Getting offer" />
     <MESSAGE value="Getting offer to the table and choosing products to order" />
-    <option name="LAST_COMMIT_MESSAGE" value="Getting offer to the table and choosing products to order" />
+    <MESSAGE value="Making RMIKeeper functions" />
+    <MESSAGE value="Changing name from Lab6 to Lab7" />
+    <option name="LAST_COMMIT_MESSAGE" value="Changing name from Lab6 to Lab7" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
