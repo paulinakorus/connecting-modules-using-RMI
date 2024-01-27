@@ -3,8 +3,6 @@ package org.example.seller;
 import org.example.service.RMI.RMIDeliverer;
 import org.example.service.RMI.RMISeller;
 import org.example.service.TriConsumer;
-import org.example.service.clients.KeeperClientImpl;
-import org.example.service.clientsInterfaces.KeeperClient;
 import org.example.service.model.User;
 import org.example.service.model.enums.Role;
 import org.example.shop.*;
@@ -21,9 +19,6 @@ import java.util.List;
 import java.util.Random;
 
 public class SellerGUI extends JFrame{
-    private String host = "localhost";
-    private KeeperClient keeperClient = new KeeperClientImpl(host, 2137);
-    private User user;
     public IKeeper keeperServer;
     public ISeller seller = new RMISeller();
     public int sellerId;

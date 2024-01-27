@@ -1,19 +1,12 @@
 package org.example.customer;
 
 import org.example.service.RMI.RMICustomer;
-import org.example.service.clients.DelivererClientImpl;
-import org.example.service.clients.KeeperClientImpl;
-import org.example.service.clients.SellerClientImpl;
-import org.example.service.clientsInterfaces.DelivererClient;
-import org.example.service.clientsInterfaces.KeeperClient;
-import org.example.service.clientsInterfaces.SellerClient;
+import org.example.service.model.Order;
 import org.example.service.model.OrderOld;
-import org.example.service.model.Product;
 import org.example.service.model.enums.ProductStatus;
 import org.example.service.model.enums.ProductStatusAtSeller;
 import org.example.service.model.tables.OrderTable;
 import org.example.service.model.tables.ProductsTable;
-import org.example.service.model.User;
 import org.example.service.model.enums.Role;
 import org.example.shop.ICallback;
 import org.example.shop.ICustomer;
@@ -31,24 +24,22 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 public class CustomerGUI extends JFrame {
-    private String host = "localhost";
-    private KeeperClient keeperClient = new KeeperClientImpl(host, 2137);
-    private SellerClient sellerClient;
-    private DelivererClient delivererClient;
-    private User user;
     private ProductsTable productsTableModel;
     private OrderTable orderTableModel;
-    public IKeeper keeperServer;
-    public ICustomer customer = new RMICustomer();
-    public int customerID;
+
+    private IKeeper keeperServer;
+    private ICustomer customer = new RMICustomer();
+    private int customerID;
+    private List<Item> localItemList = new ArrayList<>();
+
 
     private JPanel customerPanel;
     private JTabbedPane tabbedPane1;
     private JPanel productsPanel;
     private JPanel ordersPanel;
-    private JTextField hostTextField;
     private JButton registerButton;
     private JButton unregisterButton;
     private JList productsList;
@@ -71,12 +62,11 @@ public class CustomerGUI extends JFrame {
         this.setVisible(true);                                         // making frame visible
         this.add(customerPanel);
 
-        hostTextField.setText(host);
         setUpButtons();
     }
 
-    private void setUpProductsTable() throws IOException {
-        productsTableModel = new ProductsTable(keeperClient.getOffer());
+    private void setUpProductsTable(List<Item> itemList) throws IOException {
+        productsTableModel = new ProductsTable(itemList);
         productsTable.setModel(productsTableModel);
         productsTable.setAutoCreateRowSorter(false);
         productsTable.setSelectionMode(ListSelectionModel.MULTIPLE_INTERVAL_SELECTION);
@@ -89,23 +79,28 @@ public class CustomerGUI extends JFrame {
         ordersTable.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
     }
 
-    private void setUpOrderProductsTable(List<Product> productsTable) throws IOException{
-        productsTableModel = new ProductsTable(productsTable);
+    private void setUpOrderProductsTable(List<Item> itemTable) throws IOException{
+        productsTableModel = new ProductsTable(itemTable);
         productsOrderTable.setModel(productsTableModel);
         productsOrderTable.setAutoCreateRowSorter(false);
         productsOrderTable.setSelectionMode(ListSelectionModel.MULTIPLE_INTERVAL_SELECTION);
     }
 
-    public void resResponse(ICallback callback, List<Item> itemList) {
-        System.out.println(itemList.size());
+    public void callbackConsumer(ICallback callback, List<Item> itemList) {
+        try {
+            setUpProductsTable(itemList);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
     }
-    public void resReceipt(String receipt){
+
+    public void putOrderCallback(ICallback callback, List<Item> items) {
+        localItemList.addAll(items.stream().map(item -> new Item(item.getDescription(), item.getQuantity(), ProductStatus.Delivered)).collect(Collectors.toList()));
+    }
+    public void returnReceiptCallback(String receipt) {
         System.out.println(receipt);
     }
 
-    public void resPutOrder(ICallback callback, List<Item> itemList){
-        System.out.println(itemList.size());
-    }
 
     public void connect() {
         try {
@@ -113,9 +108,9 @@ public class CustomerGUI extends JFrame {
             keeperServer = (IKeeper) registry.lookup("Keeper");                                         // połączenie do serwera
             customerID = keeperServer.register(customer);
 
-            ((RMICustomer) customer).setResponseCallback(this::resResponse);
-            ((RMICustomer) customer).setReturnReceiptCallback(this::resReceipt);
-            ((RMICustomer) customer).setPutOrderCallback(this::resPutOrder);
+            ((RMICustomer) customer).setResponseCallback(this::callbackConsumer);
+            ((RMICustomer) customer).setReturnReceiptCallback(this::returnReceiptCallback);
+            ((RMICustomer) customer).setPutOrderCallback(this::putOrderCallback);
 
             System.out.println(customerID);
         } catch (RemoteException | NotBoundException e) {
@@ -153,14 +148,14 @@ public class CustomerGUI extends JFrame {
             @Override
             public void actionPerformed(ActionEvent actionEvent) {
                 if(actionEvent.getSource() == orderButton){
-                    OrderOld order = new OrderOld();
-                    order.setUserID(user.getId());
+                    Order order = new Order();
+                    order.setUser(customer);
 
                     List<Product> sellectedProducts = new ArrayList<>();
                     int[] sellectedRows = productsTable.getSelectedRows();
                     for(int row : sellectedRows){
-                        Product product = new Product();
-                        product.setId((UUID) productsTableModel.getValueAt(row, 0));
+                        Item item = new Item();
+                        item.se((UUID) productsTableModel.getValueAt(row, 0));
                         product.setName((String) productsTableModel.getValueAt(row, 1));
                         product.setProductStatus(ProductStatus.Ordered);
                         sellectedProducts.add(product);
@@ -311,10 +306,4 @@ public class CustomerGUI extends JFrame {
         });
     }
 
-    public void putOrderCallback(ICallback callback, List<Item> items) {
-        // ?
-    }
-    public void returnReceiptCallback(String receipt) {
-        System.out.println(receipt);
-    }
 }

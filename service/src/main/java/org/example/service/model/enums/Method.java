@@ -1,7 +1,6 @@
 package org.example.service.model.enums;
 
 import org.example.service.model.OrderOld;
-import org.example.service.model.Product;
 import org.example.service.model.Receipt;
 import org.example.service.model.User;
 

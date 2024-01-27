@@ -2,7 +2,6 @@ package org.example.shop;
 
 import org.example.service.model.enums.ProductStatus;
 
-import java.io.Serial;
 import java.io.Serializable;
 import java.util.Objects;
 
@@ -10,7 +9,11 @@ public class Item implements Serializable {
     private String description;
     private int quantity;
     private ProductStatus productStatus;
-    public Item(String description, int quantity){
+
+    public Item(){
+
+    }
+    public Item(String description, int quantity, ProductStatus delivered){
         Objects.requireNonNull(description);
         assert (quantity >=0 );
         this.description = description;
