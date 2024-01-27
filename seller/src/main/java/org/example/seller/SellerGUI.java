@@ -3,7 +3,6 @@ package org.example.seller;
 import org.example.service.RMI.RMIDeliverer;
 import org.example.service.RMI.RMISeller;
 import org.example.service.TriConsumer;
-import org.example.service.model.User;
 import org.example.service.model.enums.Role;
 import org.example.shop.*;
 

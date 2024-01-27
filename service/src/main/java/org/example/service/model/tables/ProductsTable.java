@@ -7,7 +7,7 @@ import java.util.Comparator;
 import java.util.List;
 
 public class ProductsTable extends AbstractTableModel {
-    private final String[] COLUMNS = new String[]{"Description", "Quantity", "Product status"};
+    private final String[] COLUMNS = new String[]{"Description", "Quantity"};
     private List<Item> itemList;
 
     public ProductsTable(List<Item> productList){
@@ -30,7 +30,6 @@ public class ProductsTable extends AbstractTableModel {
         return switch (columnIndex){
             case 0 -> item.getDescription();
             case 1 -> item.getQuantity();
-            case 2 -> item.getProductStatus();
             default -> "-";
         };
     }

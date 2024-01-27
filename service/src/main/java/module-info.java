@@ -3,6 +3,7 @@ module service {
     requires com.fasterxml.jackson.databind;
     requires java.desktop;
     requires shop;
+    requires java.rmi;
 
     exports org.example.service;
     exports org.example.service.model;

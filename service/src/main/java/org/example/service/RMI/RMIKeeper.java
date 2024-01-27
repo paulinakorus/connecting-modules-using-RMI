@@ -19,6 +19,10 @@ public class RMIKeeper implements IKeeper {
     List<Order> orderList = new ArrayList<>();
     private static int count = 0;
     public RMIKeeper() throws RemoteException {
+        for (int i=0; i<5; i++){
+            String description = "Product " + (i+1);
+            itemList.add(new Item(description, i+1));
+        }
     }
 
     @Override

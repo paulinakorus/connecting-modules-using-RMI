@@ -1,19 +1,16 @@
 package org.example.shop;
 
-import org.example.service.model.enums.ProductStatus;
-
 import java.io.Serializable;
 import java.util.Objects;
 
 public class Item implements Serializable {
     private String description;
     private int quantity;
-    private ProductStatus productStatus;
 
     public Item(){
 
     }
-    public Item(String description, int quantity, ProductStatus delivered){
+    public Item(String description, int quantity){
         Objects.requireNonNull(description);
         assert (quantity >=0 );
         this.description = description;
@@ -34,14 +31,6 @@ public class Item implements Serializable {
 
     public void setQuantity(int quantity) {
         this.quantity = quantity;
-    }
-
-    public ProductStatus getProductStatus() {
-        return productStatus;
-    }
-
-    public void setProductStatus(ProductStatus productStatus) {
-        this.productStatus = productStatus;
     }
 
     @Override

@@ -61,7 +61,9 @@ public class CustomerGUI extends JFrame {
     }
 
     private void setUpProductsTable(List<Item> itemList) throws IOException {
-        productsTableModel = new ProductsTable(itemList);
+        localItemList.clear();
+        localItemList.addAll(itemList.stream().map(item -> new Item(item.getDescription(), item.getQuantity())).collect(Collectors.toList()));
+        productsTableModel = new ProductsTable(localItemList);
         productsTable.setModel(productsTableModel);
         productsTable.setAutoCreateRowSorter(false);
         productsTable.setSelectionMode(ListSelectionModel.MULTIPLE_INTERVAL_SELECTION);
@@ -81,9 +83,8 @@ public class CustomerGUI extends JFrame {
             throw new RuntimeException(e);
         }
     }
-    // globanie List<ICallback> delivereres
     public void putOrderCallback(ICallback callback, List<Item> items) {
-        localItemList.addAll(items.stream().map(item -> new Item(item.getDescription(), item.getQuantity(), ProductStatus.Delivered)).collect(Collectors.toList()));
+        localItemList.addAll(items.stream().map(item -> new Item(item.getDescription(), item.getQuantity())).collect(Collectors.toList()));
         delivererList.add((IDeliverer) callback);
         try {
             setUpOrderProductsTable(localItemList);
@@ -106,6 +107,7 @@ public class CustomerGUI extends JFrame {
             ((RMICustomer) customer).setReturnReceiptCallback(this::returnReceiptCallback);
             ((RMICustomer) customer).setPutOrderCallback(this::putOrderCallback);
 
+            keeperServer.getOffer(customerID);
             System.out.println(customerID);
         } catch (RemoteException | NotBoundException e) {
             throw new RuntimeException(e);
@@ -119,6 +121,11 @@ public class CustomerGUI extends JFrame {
                 if(actionEvent.getSource() == registerButton){
                     if(customer == null){
                         connect();
+                        try {
+                            keeperServer.getOffer(customerID);
+                        } catch (IOException e) {
+                            throw new RuntimeException(e);
+                        }
                     }
                 }
             }
@@ -221,7 +228,6 @@ public class CustomerGUI extends JFrame {
 
                     for (Item item : localItemList) {
                         if (item.getDescription().equals(itemID)) {
-                            item.setProductStatus(ProductStatus.ToBuy);
                             itemToBuy.add(item);
                             localItemList.remove(item);
                             break;

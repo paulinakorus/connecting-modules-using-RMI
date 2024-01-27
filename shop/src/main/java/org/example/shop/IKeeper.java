@@ -1,7 +1,5 @@
 package org.example.shop;
 
-import org.example.service.model.Order;
-
 import java.rmi.Remote;
 import java.rmi.RemoteException;
 import java.util.List;
