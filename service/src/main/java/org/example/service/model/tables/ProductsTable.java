@@ -1,22 +1,22 @@
 package org.example.service.model.tables;
 
-import org.example.service.model.Product;
+import org.example.shop.Item;
 
 import javax.swing.table.AbstractTableModel;
 import java.util.Comparator;
 import java.util.List;
 
 public class ProductsTable extends AbstractTableModel {
-    private final String[] COLUMNS = new String[]{"Id", "Name", "Product status", "Status at seller"};
-    private List<Product> productList;
+    private final String[] COLUMNS = new String[]{"Description", "Quantity", "Product status"};
+    private List<Item> itemList;
 
-    public ProductsTable(List <Product> productList){
-        this.productList = productList.stream().sorted(Comparator.comparing(c -> c.getId())).toList();
+    public ProductsTable(List<Item> productList){
+        this.itemList = productList.stream().sorted(Comparator.comparing(c -> c.getDescription())).toList();
     }
 
     @Override
     public int getRowCount() {
-        return productList.size();
+        return itemList.size();
     }
 
     @Override
@@ -26,12 +26,11 @@ public class ProductsTable extends AbstractTableModel {
 
     @Override
     public Object getValueAt(int rowIndex, int columnIndex) {
-        Product product = productList.get(rowIndex);
+        Item item = itemList.get(rowIndex);
         return switch (columnIndex){
-            case 0 -> product.getId();
-            case 1 -> product.getName();
-            case 2 -> product.getProductStatus();
-            case 3 -> product.getProductStatusAtSeller();
+            case 0 -> item.getDescription();
+            case 1 -> item.getQuantity();
+            case 2 -> item.getProductStatus();
             default -> "-";
         };
     }
