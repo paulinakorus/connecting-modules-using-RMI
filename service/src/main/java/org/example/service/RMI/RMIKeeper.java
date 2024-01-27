@@ -108,4 +108,12 @@ public class RMIKeeper implements IKeeper {
             }
         }
     }
+
+    public List<Order> getOrderList() {
+        return orderList;
+    }
+
+    public List<Item> getItemList() {
+        return itemList;
+    }
 }

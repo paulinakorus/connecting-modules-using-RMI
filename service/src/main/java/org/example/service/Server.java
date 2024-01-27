@@ -1,7 +1,6 @@
 package org.example.service;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import org.example.service.model.enums.Method;
 import org.example.service.model.Payload;
 
 import java.io.IOException;

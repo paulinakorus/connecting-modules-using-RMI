@@ -37,7 +37,6 @@ public class SellerGUI extends JFrame{
         this.setVisible(true);                                         // making frame visible
         this.add(sellerPanel);
 
-        hostTextField.setText(host);
         setUpButtons();
     }
 

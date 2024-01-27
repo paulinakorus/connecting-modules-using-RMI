@@ -1,7 +1,6 @@
 package org.example.service.model.tables;
 
 import org.example.service.model.Order;
-import org.example.service.model.OrderOld;
 
 import javax.swing.table.AbstractTableModel;
 import java.util.Comparator;

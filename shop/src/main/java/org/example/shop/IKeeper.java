@@ -1,5 +1,7 @@
 package org.example.shop;
 
+import org.example.service.model.Order;
+
 import java.rmi.Remote;
 import java.rmi.RemoteException;
 import java.util.List;
@@ -20,4 +22,6 @@ public interface IKeeper extends Remote {
     // methods called by deliverer, seller
     public void returnOrder(List<Item> itemList) throws RemoteException;
 
+    List<Item> getItemList();
+    List<Order> getOrderList();
 }

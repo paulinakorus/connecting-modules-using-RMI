@@ -2,9 +2,7 @@ package org.example.customer;
 
 import org.example.service.RMI.RMICustomer;
 import org.example.service.model.Order;
-import org.example.service.model.OrderOld;
 import org.example.service.model.enums.ProductStatus;
-import org.example.service.model.enums.ProductStatusAtSeller;
 import org.example.service.model.tables.OrderTable;
 import org.example.service.model.tables.ProductsTable;
 import org.example.service.model.enums.Role;
@@ -73,7 +71,7 @@ public class CustomerGUI extends JFrame {
     }
 
     private void setUpOrderTable() throws IOException {
-        orderTableModel = new OrderTable(keeperClient.getOrders());
+        orderTableModel = new OrderTable(keeperServer.getOrderList());
         ordersTable.setModel(orderTableModel);
         ordersTable.setAutoCreateRowSorter(false);
         ordersTable.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
@@ -148,22 +146,19 @@ public class CustomerGUI extends JFrame {
             @Override
             public void actionPerformed(ActionEvent actionEvent) {
                 if(actionEvent.getSource() == orderButton){
-                    Order order = new Order();
-                    order.setUser(customer);
-
-                    List<Product> sellectedProducts = new ArrayList<>();
+                    List<Item> sellectedItems = new ArrayList<>();
                     int[] sellectedRows = productsTable.getSelectedRows();
                     for(int row : sellectedRows){
                         Item item = new Item();
-                        item.se((UUID) productsTableModel.getValueAt(row, 0));
-                        product.setName((String) productsTableModel.getValueAt(row, 1));
-                        product.setProductStatus(ProductStatus.Ordered);
-                        sellectedProducts.add(product);
+                        item.setDescription((String) productsTableModel.getValueAt(row, 0));
+                        item.setQuantity((int) productsTableModel.getValueAt(row, 1));
+                        //item.setProductStatus(ProductStatus.Ordered);
+                        sellectedItems.add(item);
                     }
-                    order.setProductList(sellectedProducts);
+
                     try {
-                        keeperClient.putOrder(order);
-                        setUpProductsTable();
+                        keeperServer.putOrder(customerID, sellectedItems);
+                        setUpProductsTable(keeperServer.getItemList());
                         setUpOrderTable();
                     } catch (IOException e) {
                         throw new RuntimeException(e);
@@ -180,10 +175,10 @@ public class CustomerGUI extends JFrame {
                     var orderID = (UUID) ordersTable.getValueAt(sellectedRow, 0);
 
                     try {
-                        List<OrderOld> orderList = keeperClient.getOrders();
-                        for (OrderOld oneOrder : orderList) {
+                        List<Order> orderList = keeperServer.getOrderList();
+                        for (Order oneOrder : orderList) {
                             if(oneOrder.getOrderID().equals(orderID)){
-                                setUpOrderProductsTable(oneOrder.getProductList());
+                                setUpOrderProductsTable(oneOrder.getItemList());
                             }
                         }
                     } catch (IOException e) {
@@ -198,30 +193,27 @@ public class CustomerGUI extends JFrame {
             public void actionPerformed(ActionEvent actionEvent) {
                 if(actionEvent.getSource() == returnButton){
                     int sellectedRowProduct = productsOrderTable.getSelectedRow();
-                    var productID = (UUID) productsOrderTable.getValueAt(sellectedRowProduct, 0);
+                    var itemID = (String) productsOrderTable.getValueAt(sellectedRowProduct, 0);
 
                     int sellectedRowOrder = ordersTable.getSelectedRow();
                     var orderID = (UUID) ordersTable.getValueAt(sellectedRowOrder, 0);
 
-                    try {
-                        List<OrderOld> orderList = keeperClient.getOrders();
-                        for (OrderOld oneOrder : orderList) {
-                            if(oneOrder.getOrderID().equals(orderID)){
-                                for (Product product : oneOrder.getProductList()) {
-                                    if(product.getId().equals(productID)){
-                                        product.setProductStatusAtSeller(ProductStatusAtSeller.ToReturn);
-                                        sellerClient = new SellerClientImpl(host, keeperClient.getInfoByUserRole(Role.Seller).getPort());
-                                        oneOrder = sellerClient.acceptOrder(oneOrder);
-                                        keeperClient.returnOrder(oneOrder);
-                                        setUpProductsTable();
-                                        break;
-                                    }
+                    List<Order> orderList = keeperServer.getOrderList();
+                    for (Order oneOrder : orderList) {
+                        if(oneOrder.getOrderID().equals(orderID)){
+                            for (Item item : oneOrder.getItemList()) {
+                                if(item.getDescription().equals(itemID)){
+                                    item.setProductStatus(ProductStatus.ToReturn);
+
+                                    /*sellerClient = new SellerClientImpl(host, keeperClient.getInfoByUserRole(Role.Seller).getPort());
+                                    oneOrder = sellerClient.acceptOrder(oneOrder);
+                                    keeperClient.returnOrder(oneOrder);
+                                    setUpProductsTable();*/
+                                    break;
                                 }
                             }
-                            break;
                         }
-                    } catch (IOException e) {
-                        throw new RuntimeException(e);
+                        break;
                     }
                 }
             }
@@ -232,35 +224,27 @@ public class CustomerGUI extends JFrame {
             public void actionPerformed(ActionEvent actionEvent) {
                 if(actionEvent.getSource() == payButton){
                     int sellectedRowProduct = productsOrderTable.getSelectedRow();
-                    var productID = (UUID) productsOrderTable.getValueAt(sellectedRowProduct, 0);
+                    var itemID = (String) productsOrderTable.getValueAt(sellectedRowProduct, 0);
 
                     int sellectedRowOrder = ordersTable.getSelectedRow();
                     var orderID = (UUID) ordersTable.getValueAt(sellectedRowOrder, 0);
 
-                    try {
-                        List<OrderOld> orderList = keeperClient.getOrders();
-                        for (OrderOld oneOrder : orderList) {
-                            if(oneOrder.getOrderID().equals(orderID)){
-                                for (Product product : oneOrder.getProductList()) {
-                                    if(product.getId().equals(productID)){
-                                        if(product.getProductStatusAtSeller() == null) {
-                                            return;
-                                        }
-                                        if(product.getProductStatusAtSeller().equals(ProductStatusAtSeller.ToBought)){
-                                            sellerClient =  new SellerClientImpl(host, keeperClient.getInfoByUserRole(Role.Seller).getPort());
-                                            oneOrder = sellerClient.acceptOrder(oneOrder);
-                                            keeperClient.updateOrder(oneOrder);
-                                            setUpOrderProductsTable(oneOrder.getProductList());
-                                            setUpOrderTable();
-                                        }
-                                        break;
-                                    }
+                    List<Order> orderList = keeperServer.getOrderList();
+                    for (Order oneOrder : orderList) {
+                        if(oneOrder.getOrderID().equals(orderID)){
+                            for (Item item : oneOrder.getItemList()) {
+                                if(item.getDescription().equals(itemID)){
+                                    item.setProductStatus(ProductStatus.ToBuy);
+
+                                    /*sellerClient = new SellerClientImpl(host, keeperClient.getInfoByUserRole(Role.Seller).getPort());
+                                    oneOrder = sellerClient.acceptOrder(oneOrder);
+                                    keeperClient.returnOrder(oneOrder);
+                                    setUpProductsTable();*/
+                                    break;
                                 }
                             }
-                            break;
                         }
-                    } catch (IOException e) {
-                        throw new RuntimeException(e);
+                        break;
                     }
                 }
             }
@@ -297,7 +281,7 @@ public class CustomerGUI extends JFrame {
                 if (actionEvent.getSource() == refreashTablesButton){
                     try {
                         setUpOrderTable();
-                        setUpProductsTable();
+                        setUpProductsTable(localItemList);
                     } catch (IOException e) {
                         throw new RuntimeException(e);
                     }
