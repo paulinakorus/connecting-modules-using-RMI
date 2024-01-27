@@ -92,12 +92,11 @@ public class DelivererGUI extends JFrame{
             @Override
             public void actionPerformed(ActionEvent actionEvent) {
                 if(actionEvent.getSource() == registerButton){
-                    if(deliverer == null){
-                        try {
-                            connect();
-                        } catch (IOException e) {
-                            throw new RuntimeException(e);
-                        }
+                    try {
+                        connect();
+                        registerButton.setDefaultCapable(false);
+                    } catch (IOException e) {
+                        throw new RuntimeException(e);
                     }
                 }
             }

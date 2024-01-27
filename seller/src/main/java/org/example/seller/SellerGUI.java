@@ -59,9 +59,8 @@ public class SellerGUI extends JFrame{
             @Override
             public void actionPerformed(ActionEvent actionEvent) {
                 if(actionEvent.getSource() == registerButton){
-                    if(seller == null){
-                        connect();
-                    }
+                    connect();
+                    registerButton.setDefaultCapable(false);
                 }
             }
         });

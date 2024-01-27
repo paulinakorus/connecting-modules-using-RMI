@@ -119,13 +119,12 @@ public class CustomerGUI extends JFrame {
             @Override
             public void actionPerformed(ActionEvent actionEvent) {
                 if(actionEvent.getSource() == registerButton){
-                    if(customer == null){
-                        connect();
-                        try {
-                            keeperServer.getOffer(customerID);
-                        } catch (IOException e) {
-                            throw new RuntimeException(e);
-                        }
+                    connect();
+                    registerButton.setDefaultCapable(false);
+                    try {
+                        keeperServer.getOffer(customerID);
+                    } catch (IOException e) {
+                        throw new RuntimeException(e);
                     }
                 }
             }
