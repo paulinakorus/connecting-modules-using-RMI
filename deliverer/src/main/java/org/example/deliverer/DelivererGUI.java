@@ -44,7 +44,6 @@ public class DelivererGUI extends JFrame{
 
     private void setUpOrderTable() throws IOException {
         List<Order> orderList = new ArrayList<>();
-        //orderList.add(keeperClient.getOrder());
         orderList.add(currentOrder);
         orderTableModel = new OrderTable(orderList);
         orderTable.setModel(orderTableModel);
@@ -121,7 +120,12 @@ public class DelivererGUI extends JFrame{
         buyAllProductsButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-
+                try {
+                    ICustomer customer = (ICustomer) currentOrder.getUser();
+                    customer.putOrder(deliverer, currentOrder.getItemList());
+                } catch (RemoteException ex) {
+                    throw new RuntimeException(ex);
+                }
             }
         });
 
@@ -131,7 +135,7 @@ public class DelivererGUI extends JFrame{
                 if(actionEvent.getSource() == getOrderButton){
                     try {
                         keeperServer.getOrder(delivererID);
-                        //setUpOrderTable();
+                        setUpOrderTable();
                     } catch (IOException e) {
                         throw new RuntimeException(e);
                     }

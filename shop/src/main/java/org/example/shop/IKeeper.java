@@ -22,6 +22,6 @@ public interface IKeeper extends Remote {
     // methods called by deliverer, seller
     public void returnOrder(List<Item> itemList) throws RemoteException;
 
-    List<Item> getItemList();
-    List<Order> getOrderList();
+    //List<Item> getItemList();
+    //List<Order> getOrderList();
 }

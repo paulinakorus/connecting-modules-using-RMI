@@ -40,21 +40,14 @@ public class SellerGUI extends JFrame{
         setUpButtons();
     }
 
-    public void resResponse(ICallback callback, List<Item> itemList) {
-        System.out.println(itemList.size());
-    }
-
-    public void resAcceptOrder(ICustomer iCustomer, List<Item> itemList, List<Item> itemList1) {
-        System.out.println("Accepting order");
-    }
     public void connect() {
         try {
             Registry registry = LocateRegistry.getRegistry();                       // połączenie do serwera
             keeperServer = (IKeeper) registry.lookup("Keeper");                                         // połączenie do serwera
             sellerId = keeperServer.register(seller);
 
-            ((RMISeller) seller).setResponseCallback(this::resResponse);
-            ((RMISeller) seller).setAcceptOrderCallback(this::resAcceptOrder);
+            //((RMISeller) seller).setResponseCallback(this::acceptOrderCallback);
+            ((RMISeller) seller).setAcceptOrderCallback(this::acceptOrderCallback);
 
             System.out.println(sellerId);
         } catch (RemoteException | NotBoundException e) {
@@ -89,8 +82,12 @@ public class SellerGUI extends JFrame{
         });
     }
 
-    public void acceptOrderCallback(ICustomer customer, List<Item> boughtItems, List<Item> returnedItems) throws RemoteException {
-        keeperServer.returnOrder(returnedItems);
-        customer.returnReceipt("Quantity: " + boughtItems.size() + " Cost: " + new Random().nextInt(1, 100)*10);
+    public void acceptOrderCallback(ICustomer customer, List<Item> boughtItems, List<Item> returnedItems){
+        try {
+            keeperServer.returnOrder(returnedItems);
+            customer.returnReceipt("Quantity: " + boughtItems.size() + " Cost: " + new Random().nextInt(1, 100)*10);
+        } catch (RemoteException e) {
+            throw new RuntimeException(e);
+        }
     }
 }
